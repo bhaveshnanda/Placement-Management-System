@@ -16,11 +16,9 @@ gunicorn==20.1.0
 h5py==3.10.0
 image==1.5.33
 importlib-metadata==6.6.0
-ipykernel==6.23.1
-itsdangerous==2.1.2
-jedi==0.18.2
+
 Jinja2==3.1.2
-joblib==1.2.0
+
 json5==0.9.14
 jsonify==0.5
 jsonpointer==2.4
@@ -48,7 +46,7 @@ psutil==5.9.5
 pylibsrtp==0.9.1
 pylint==2.17.4
 Pympler==1.0.1
-pypiwin32==223
+
 PyRect==0.2.0
 pyrsistent==0.19.3
 python-dateutil==2.8.2
