@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/static/css/student_login_style.css" />
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="title-text">
+        <div class="title login">Login Form</div>
+        <div class="title signup">Signup Form</div>
+      </div>
+      <div class="form-container">
+        <div class="form-inner">
+          <form action="/clg-log-data" class="login" id="login-Form">
+            <div class="field">
+              <input
+                type="Email"
+                name="logemail"
+                id="logemail"
+                placeholder="Email Address"
+                required
+              />
+            </div>
+            <div class="field">
+              <input
+                type="password"
+                name="logpassword"
+                id="logpassword"
+                placeholder="Password"
+                required
+              />
+            </div>
+            <div class="pass-link"><a href="#">Forgot password?</a></div>
+            <div class="field btn">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Login" />
+            </div>
+            <br />
+            <center><h2 style="color: red" id="error4"></h2></center>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("login-Form")
+        .addEventListener("submit", function (event2) {
+          event2.preventDefault();
+          var logemail = document.getElementById("logemail").value.trim();
+          var logpassword = document.getElementById("logpassword").value.trim();
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "http://127.0.0.1:5000/admin-log-data", true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+              console.log("Response:", xhr.responseText);
+              if (xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                  window.location.href = "./admin_index.html";
+                } else {
+                  document.getElementById("error4").textContent =
+                    response.error2 ||
+                    "Wrong Email or Password, please try again!!!";
+                }
+              } else {
+                console.error("Error:", xhr.status, xhr.statusText);
+              }
+            }
+          };
+
+          var logformData =
+            "logemail=" +
+            encodeURIComponent(logemail) +
+            "&logpassword=" +
+            encodeURIComponent(logpassword);
+          xhr.send(logformData);
+        });
+    </script>
+  </body>
+</html>

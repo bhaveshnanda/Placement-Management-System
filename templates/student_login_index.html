@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/static/css/student_login_style.css" />
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="title-text">
+        <div class="title login">Login Form</div>
+        <div class="title signup">Signup Form</div>
+      </div>
+      <div class="form-container">
+        <div class="slide-controls">
+          <input type="radio" name="slide" id="login" checked />
+          <input type="radio" name="slide" id="signup" />
+          <label for="login" class="slide login">Login</label>
+          <label for="signup" class="slide signup">Signup</label>
+          <div class="slider-tab"></div>
+        </div>
+        <div class="form-inner">
+          <form action="/logdata" class="login" id="login-Form">
+            <div class="field">
+              <input
+                type="Email"
+                name="logemail"
+                id="logemail"
+                placeholder="Email Address"
+                required
+              />
+            </div>
+            <div class="field">
+              <input
+                type="password"
+                name="logpassword"
+                id="logpassword"
+                placeholder="Password"
+                required
+              />
+            </div>
+            <div class="pass-link"><a href="#">Forgot password?</a></div>
+            <div class="field btn">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Login" />
+            </div>
+            <div class="signup-link">
+              Not a member? <a href="">Signup now</a>
+            </div>
+            <br />
+            <center><h2 style="color: red" id="error2"></h2></center>
+          </form>
+          <form action="/data" class="login" id="signup-form">
+            <div class="field">
+              <input
+                type="text"
+                id="email_input"
+                name="email_input"
+                placeholder="Email Address"
+                required
+              />
+            </div>
+            <div class="field">
+              <input
+                type="password"
+                id="password_input"
+                name="password_input"
+                placeholder="Password"
+                required
+              />
+            </div>
+            <div class="field">
+              <input type="password" placeholder="Confirm password" required />
+            </div>
+            <div class="field">
+              <input
+                type="name"
+                id="name_input"
+                name="name_input"
+                placeholder="Enter Name"
+                required
+              />
+            </div>
+            <div class="field">
+              <input
+                type="number"
+                id="age_input"
+                name="age_input"
+                placeholder="Enter Age"
+                required
+              />
+            </div>
+            <div class="field">
+              <input
+                type="resume"
+                id="resume"
+                name="resume"
+                placeholder="Resume google drive link"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Select Education</label>
+              <select
+                class="field"
+                id="education_input"
+                name="education_input"
+                required
+              >
+                <option selected></option>
+                <option value="EXTC">EXTC</option>
+                <option value="AIDS">AIDS</option>
+                <option value="Comps">Comps</option>
+                <option value="IT">IT</option>
+                <option value="Chemical">Chemical</option>
+                >
+              </select>
+            </div>
+            <br /><br />
+            <div class="field">
+              <label>PLacement Status</label>
+              <select
+                class="field"
+                id="placement_status"
+                name="placement_status"
+                required
+              >
+                <option selected></option>
+                <option value="Already Placed">Already PLaced</option>
+                <option value="want placement">Want placement</option>
+                <option value="Higher Studies">Going for higher studies</option>
+                >
+              </select>
+            </div>
+            <br /><br />
+            <div class="field btn">
+              <div class="btn-layer"></div>
+              <input type="submit" value="Signup" />
+            </div>
+            <br />
+            <p id="error"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      const loginText = document.querySelector(".title-text .login");
+      const loginForm = document.querySelector("form.login");
+      const loginBtn = document.querySelector("label.login");
+      const signupBtn = document.querySelector("label.signup");
+      const signupLink = document.querySelector("form .signup-link a");
+      signupBtn.onclick = () => {
+        loginForm.style.marginLeft = "-50%";
+        loginText.style.marginLeft = "-50%";
+      };
+      loginBtn.onclick = () => {
+        loginForm.style.marginLeft = "0%";
+        loginText.style.marginLeft = "0%";
+      };
+      signupLink.onclick = () => {
+        signupBtn.click();
+        return false;
+      };
+    </script>
+    <script>
+      document
+        .getElementById("signup-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var email = document.getElementById("email_input").value.trim();
+          var password = document.getElementById("password_input").value.trim();
+          var name = document.getElementById("name_input").value.trim();
+          var age = document.getElementById("age_input").value.trim();
+          var resume = document.getElementById("resume").value.trim();
+          var education = document
+            .getElementById("education_input")
+            .value.trim();
+          var placement = document
+            .getElementById("placement_status")
+            .value.trim();
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "http://127.0.0.1:5000/data", true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+              console.log("Response:", xhr.responseText);
+              if (xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                  document.getElementById("error").textContent =
+                    response.error || "Account Created successfully";
+                }
+              } else {
+                console.error("Error:", xhr.status, xhr.statusText);
+              }
+            }
+          };
+
+          var formData =
+            "email_input=" +
+            encodeURIComponent(email) +
+            "&password_input=" +
+            encodeURIComponent(password) +
+            "&name_input=" +
+            encodeURIComponent(name) +
+            "&age_input=" +
+            encodeURIComponent(age) +
+            "&education_input=" +
+            encodeURIComponent(education) +
+            "&placement_status=" +
+            encodeURIComponent(placement) +
+            "&resume=" +
+            encodeURIComponent(resume);
+
+          xhr.send(formData);
+        });
+
+      document
+        .getElementById("login-Form")
+        .addEventListener("submit", function (event2) {
+          event2.preventDefault();
+          var logemail = document.getElementById("logemail").value.trim();
+          var logpassword = document.getElementById("logpassword").value.trim();
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "http://127.0.0.1:5000/logdata", true);
+          xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded"
+          );
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+              console.log("Response:", xhr.responseText);
+              if (xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                  window.location.href = "./student_index.html";
+                } else {
+                  document.getElementById("error2").textContent =
+                    response.error2 ||
+                    "Wrong Email or Password, please try again!!!";
+                }
+              } else {
+                console.error("Error:", xhr.status, xhr.statusText);
+              }
+            }
+          };
+
+          var logformData =
+            "logemail=" +
+            encodeURIComponent(logemail) +
+            "&logpassword=" +
+            encodeURIComponent(logpassword);
+          xhr.send(logformData);
+        });
+    </script>
+  </body>
+</html>
