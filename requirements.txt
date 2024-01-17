@@ -61,4 +61,4 @@ scikit-elm==0.21a0
 scipy==1.11.1
 Send2Trash==1.8.2
 simplejson==3.19.2
-sklearn==0.0.post5
+
